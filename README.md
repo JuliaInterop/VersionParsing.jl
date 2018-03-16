@@ -11,4 +11,12 @@ version-number strings into Julia's built-in `VersionNumber` type, via
 the `vparse(string)` function.
 
 Unlike the `VersionNumber(string)` constructor, `vparse(string)` can
-handle version-number strings in a much wider range of formats.
+handle version-number strings in a much wider range of formats.  For example,
+
+* `major.minor.patch[.+-]something[.+-]something` is converted if possible into the
+  closest `VersionNumber` equivalent (`something` becomes a prerelease
+  or build identifier).
+* Non-numeric prefixes are stripped along with any invalid version characters.
+* Text following whitespace after the version number is ignored.
+* When all else fails, everything except the first `major.minor.patch`
+  digits found are ignored.

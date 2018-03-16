@@ -1,3 +1,5 @@
+__precompile__(true)
+
 """
 The `VersionParsing` package implements flexible parsing of
 version-number strings into Julia's built-in `VersionNumber` type, via

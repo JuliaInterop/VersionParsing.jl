@@ -15,18 +15,17 @@ export vparse
     vparse(s::AbstractString)
 
 Returns a `VersionNumber` representing as much as possible of the version
-information in the string `s`.
+information in the string `s`.  A much wider range of formats is supported
+than the semver styles recognized by `VersionNumber(s)`.
 
-Typically, `s` is a string of the form `"major[.minor.patch]"`, but several
-variations on this format are supported, including:
+For example,
 
-* `major.minor.patch[.+-]something[.+-]something` is converted if possible into the
-  closest `VersionNumber` equivalent (`something` becomes a prerelease
-  or build identifier).
 * Non-numeric prefixes are stripped along with any invalid version characters.
 * Text following whitespace after the version number is ignored.
-* In Debian-style version numbers `epoch:major.minor.patch-rev`, the "epoch"
-  is ignored and only the upstream version `major.minor.patch-rev` is used.
+* `major.minor.patch.x.y.z` is supported, with `x.y.z` prepended to the
+  semver build identifier, i.e. it is parsed like `major.minor.patch+x.y.z`.
+* Multiple `+x+y` build identifiers are concatenated as if they were `+x.y`.
+* A leading `0` is prepended if needed, e.g. `.x` is treated as `0.x`.
 * When all else fails, everything except the first `major.minor.patch`
   digits found are ignored.
 """
@@ -36,8 +35,9 @@ digits2num(s::AbstractString) = all(isdigit, s) ? parse(Int, s) : s
 splitparts(s::AbstractString) = map(digits2num, filter!(!isempty, split(s, '.')))
 
 function vparse(s_::String)
-    s = replace(s_, r"^\D+"=>"") # strip non-numeric prefix
+    s = replace(s_, r"^[^0-9.]+"=>"") # strip non-numeric prefix
     isempty(s) && throw(ArgumentError("non-numeric version string $s_"))
+    contains(s, r"^\.\d") && (s = "0" * s) # treat .x as 0.x
     if contains(s, r"^\d:\d+") # debian-style version number
         s = replace(s, r"^\d:"=>"") # strip epoch
     end

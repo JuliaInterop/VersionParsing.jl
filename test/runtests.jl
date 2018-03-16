@@ -8,7 +8,7 @@ using Compat.Test
 # examples from npm docs (https://docs.npmjs.com/misc/semver)
 @test_throws ArgumentError vparse("a.b.c")
 @test vparse("  =v1.2.3   ") == v"1.2.3"
-@test vparse("v2") == v"2.0.0"
+@test vparse("v2") == vparse("version 2.0") == v"2.0.0"
 @test vparse("42.6.7.9.3-alpha") == v"42.6.7-alpha+9.3"
 
 @test vparse("1.2.3.8-4.2") == v"1.2.3-4.2+8"
@@ -16,3 +16,5 @@ using Compat.Test
 
 # Debian-style epoch:upstream version numbers
 @test vparse("4:4.7.4-0ubuntu8") == vparse("0:4.7.4-0ubuntu8") == v"4.7.4-0ubuntu8"
+
+@test vparse(".3") == v"0.3.0"

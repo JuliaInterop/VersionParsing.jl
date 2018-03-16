@@ -13,3 +13,6 @@ using Compat.Test
 
 @test vparse("1.2.3.8-4.2") == v"1.2.3-4.2+8"
 @test vparse("1.2.3.8-4..b2+9.7++2-0") == v"1.2.3-4.b2+8.9.7.2-0"
+
+# Debian-style epoch:upstream version numbers
+@test vparse("4:4.7.4-0ubuntu8") == vparse("0:4.7.4-0ubuntu8") == v"4.7.4-0ubuntu8"

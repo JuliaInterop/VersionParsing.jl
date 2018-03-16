@@ -57,8 +57,8 @@ function vparse(s_::String)
         pre = build = ()
         s = s[m.offset + lastindex(m.match):end] # remaining string after the match
         @assert !isempty(s) # otherwise VersionNumber(s) would have succeeded
-        if contains(s, r"^\.\d") # treat following x.y.z digits as build part
-            m = match(r"^(\.\d)+", s)
+        if s[1] == '.' # treat following x.y.z as build part
+            m = match(r"^(\.[0-9a-zA-Z]*)+", s)
             build = (build..., splitparts(m.match)...)
             s = s[m.offset + lastindex(m.match):end]
         end

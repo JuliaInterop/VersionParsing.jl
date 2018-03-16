@@ -4,6 +4,7 @@ using Compat.Test
 @test vparse("3.7.2a4") == v"3.7.2-a4" == vparse("version 3.7.2a4: the best version")
 @test vparse("2.1.0-python3_5") == v"2.1.0-python35" # Plots.jl#1432
 @test vparse("0.99.1.1") == v"0.99.1+1" # julia#7282
+@test vparse("2.1.0.post806+g905465b") == v"2.1.0+post806.g905465b" # from julia#7282
 
 # examples from npm docs (https://docs.npmjs.com/misc/semver)
 @test_throws ArgumentError vparse("a.b.c")
@@ -18,3 +19,4 @@ using Compat.Test
 @test vparse("4:4.7.4-0ubuntu8") == vparse("0:4.7.4-0ubuntu8") == v"4.7.4-0ubuntu8"
 
 @test vparse(".3") == v"0.3.0"
+@test vparse("2.1.0...+3") == v"2.1.0+3"

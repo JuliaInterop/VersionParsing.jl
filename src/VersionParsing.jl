@@ -55,12 +55,12 @@ function vparse(s_::String)
         minor = m[2] === nothing ? 0 : parse(Int, m[2][2:end])
         patch = m[3] === nothing ? 0 : parse(Int, m[3][2:end])
         pre = build = ()
-        s = s[m.offset + endof(m.match):end] # remaining string after the match
+        s = s[m.offset + lastindex(m.match):end] # remaining string after the match
         @assert !isempty(s) # otherwise VersionNumber(s) would have succeeded
         if contains(s, r"^\.\d") # treat following x.y.z digits as build part
             m = match(r"^(\.\d)+", s)
             build = (build..., splitparts(m.match)...)
-            s = s[m.offset + endof(m.match):end]
+            s = s[m.offset + lastindex(m.match):end]
         end
         splitplus = split(s, '+')
         if !isempty(splitplus[1])

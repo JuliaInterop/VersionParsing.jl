@@ -38,7 +38,7 @@ splitparts(s::AbstractString) = map(digits2num, filter!(!isempty, split(s, '.'))
 function vparse(s_::String)
     s = replace(s_, r"^\D+"=>"") # strip non-numeric prefix
     isempty(s) && throw(ArgumentError("non-numeric version string $s_"))
-    if ismatch(r"^\d:\d+", s) # debian-style version number
+    if contains(s, r"^\d:\d+") # debian-style version number
         s = replace(s, r"^\d:"=>"") # strip epoch
     end
     i = Compat.findfirst(isspace, s)
@@ -55,12 +55,12 @@ function vparse(s_::String)
         minor = m[2] === nothing ? 0 : parse(Int, m[2][2:end])
         patch = m[3] === nothing ? 0 : parse(Int, m[3][2:end])
         pre = build = ()
-        s = s[m.match.endof+1:end] # remaining string after the match
+        s = s[m.offset + endof(m.match):end] # remaining string after the match
         @assert !isempty(s) # otherwise VersionNumber(s) would have succeeded
-        if ismatch(r"^\.\d", s) # treat following x.y.z digits as build part
+        if contains(s, r"^\.\d") # treat following x.y.z digits as build part
             m = match(r"^(\.\d)+", s)
             build = (build..., splitparts(m.match)...)
-            s = s[m.match.endof+1:end]
+            s = s[m.offset + endof(m.match):end]
         end
         splitplus = split(s, '+')
         if !isempty(splitplus[1])

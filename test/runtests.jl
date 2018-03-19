@@ -20,3 +20,5 @@ using Compat.Test
 
 @test vparse(".3") == v"0.3.0"
 @test vparse("2.1.0...+3") == v"2.1.0+3"
+
+@test vparse("3,1,2") == v"3.1.2" == vparse("version 3.1.2, a good version")

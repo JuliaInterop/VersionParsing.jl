@@ -23,6 +23,7 @@ than the semver styles recognized by `VersionNumber(s)`.
 For example,
 
 * Non-numeric prefixes are stripped along with any invalid version characters.
+  Commas are treated as decimal points.
 * Text following whitespace after the version number is ignored.
 * `major.minor.patch.x.y.z` is supported, with `x.y.z` prepended to the
   semver build identifier, i.e. it is parsed like `major.minor.patch+x.y.z`.
@@ -37,7 +38,8 @@ digits2num(s::AbstractString) = all(isdigit, s) ? parse(Int, s) : s
 splitparts(s::AbstractString) = map(digits2num, filter!(!isempty, split(s, '.')))
 
 function vparse(s_::String)
-    s = replace(s_, r"^[^0-9.]+"=>"") # strip non-numeric prefix
+    s = replace(s_, ','=>".") # treat , as . (e.g MS resource-file syntax)
+    s = replace(s, r"^[^0-9.]+"=>"") # strip non-numeric prefix
     isempty(s) && throw(ArgumentError("non-numeric version string $s_"))
     contains(s, r"^\.\d") && (s = "0" * s) # treat .x as 0.x
     if contains(s, r"^\d:\d+") # debian-style version number

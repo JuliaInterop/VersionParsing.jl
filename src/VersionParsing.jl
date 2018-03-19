@@ -38,8 +38,8 @@ digits2num(s::AbstractString) = all(isdigit, s) ? parse(Int, s) : s
 splitparts(s::AbstractString) = map(digits2num, filter!(!isempty, split(s, '.')))
 
 function vparse(s_::String)
-    s = replace(s_, ','=>".") # treat , as . (e.g MS resource-file syntax)
-    s = replace(s, r"^[^\d]*[^.\d](\.?\d)"=>s"\1") # strip non-numeric prefix
+    s = replace(s_, r"^[^\d]*[^.\d](\.?\d)"=>s"\1") # strip non-numeric prefix
+    s = replace(s, ','=>".") # treat , as . (e.g MS resource-file syntax)
     isempty(s) && throw(ArgumentError("non-numeric version string $s_"))
     contains(s, r"^\.\d") && (s = "0" * s) # treat .x as 0.x
     if contains(s, r"^\d:\d+") # debian-style version number

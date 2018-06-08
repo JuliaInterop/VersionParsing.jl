@@ -41,8 +41,8 @@ function vparse(s_::String)
     s = replace(s_, r"^[^\d]*[^.\d](\.?\d)"=>s"\1") # strip non-numeric prefix
     s = replace(s, ','=>".") # treat , as . (e.g MS resource-file syntax)
     isempty(s) && throw(ArgumentError("non-numeric version string $s_"))
-    contains(s, r"^\.\d") && (s = "0" * s) # treat .x as 0.x
-    if contains(s, r"^\d:\d+") # debian-style version number
+    occursin(r"^\.\d", s) && (s = "0" * s) # treat .x as 0.x
+    if occursin(r"^\d:\d+", s) # debian-style version number
         s = replace(s, r"^\d:"=>"") # strip epoch
     end
     i = Compat.findfirst(isspace, s)

@@ -1,5 +1,5 @@
-using VersionParsing, Compat
-using Compat.Test
+using VersionParsing
+using Test
 
 @test vparse("3.7.2a4") == v"3.7.2-a4" == vparse("version 3.7.2a4: the best version")
 @test vparse("2.1.0-python3_5") == v"2.1.0-python35" # Plots.jl#1432

@@ -10,7 +10,6 @@ handle version-number strings in a much wider range of formats
 without throwing an exception.
 """
 module VersionParsing
-using Compat
 export vparse
 
 """
@@ -45,7 +44,7 @@ function vparse(s_::String)
     if occursin(r"^\d:\d+", s) # debian-style version number
         s = replace(s, r"^\d:"=>"") # strip epoch
     end
-    i = Compat.findfirst(isspace, s)
+    i = findfirst(isspace, s)
     if i !== nothing
         s = s[1:prevind(s,i)]
     end

@@ -34,7 +34,7 @@ For example,
 vparse(s::AbstractString) = vparse(String(s))
 
 digits2num(s::AbstractString) = all(isdigit, s) ? parse(Int, s) : s
-splitparts(s::AbstractString) = map(digits2num, filter!(!isempty, split(s, '.')))
+splitparts(s::T) where {T <: AbstractString} = Union{Int, T}[digits2num(x) for x in filter!(!isempty, split(s, '.'))]
 
 function vparse(s_::String)
     s = replace(s_, r"^[^\d]*[^.\d](\.?\d)"=>s"\1") # strip non-numeric prefix
@@ -75,5 +75,11 @@ function vparse(s_::String)
         return VersionNumber(major, minor, patch, pre, build)
     end
 end
+
+function _precompile_()
+    ccall(:jl_generating_output, Cint, ()) == 1 || return nothing
+    precompile(Tuple{typeof(VersionParsing.vparse), String})
+end
+_precompile_()
 
 end # module

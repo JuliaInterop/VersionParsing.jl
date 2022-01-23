@@ -17,8 +17,8 @@ to "foreign" version numbers from external packages.
 For example,
 
 * Non-numeric prefixes are stripped along with any invalid version characters.
-  Commas are treated as decimal points.
-* Text following whitespace after the version number is ignored.
+  Commas are treated as decimal points, and underscores are treated as hyphens.
+* Text following whitespace or other invalid-version characters after the version number is ignored.
 * `major.minor.patch.x.y.z` is supported, with `x.y.z` prepended to the
   semver build identifier, i.e. it is parsed like `major.minor.patch+x.y.z`.
 * Multiple `+x+y` build identifiers are concatenated as if they were `+x.y`.

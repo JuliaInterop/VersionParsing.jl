@@ -44,11 +44,8 @@ function vparse(s_::String)
     if occursin(r"^\d:\d+", s) # debian-style version number
         s = replace(s, r"^\d:"=>"") # strip epoch
     end
-    i = findfirst(isspace, s)
-    if i !== nothing
-        s = s[1:prevind(s,i)]
-    end
-    s = replace(s, r"[^A-Za-z0-9.+-]*"=>"") # strip invalid version chars
+    s = replace(s, '_'=>'-') # treat underscores as dashes
+    s = replace(s, r"[^A-Za-z0-9.+-].*"=>"") # strip anything after invalid version chars
     try
         return VersionNumber(s) # first look for semver-compliant version
     catch

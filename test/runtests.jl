@@ -2,7 +2,7 @@ using VersionParsing
 using Test
 
 @test vparse("3.7.2a4") == v"3.7.2-a4" == vparse("version 3.7.2a4: the best version")
-@test vparse("2.1.0-python3_5") == v"2.1.0-python35" # Plots.jl#1432
+@test vparse("2.1.0-python3_5") == v"2.1.0-python3-5" # Plots.jl#1432
 @test vparse("0.99.1.1") == v"0.99.1+1" # julia#7282
 @test vparse("2.1.0.post806+g905465b") == v"2.1.0+post806.g905465b" # from julia#7282
 
@@ -26,3 +26,7 @@ using Test
 @test vparse("A darn good version. 1.2") == v"1.2.0"
 @test vparse("A darn good version. .2") == v"0.2.0"
 @test_throws ArgumentError vparse("..2")
+
+@test vparse("6.4.0_3f928be_2022.01.21") == v"6.4.0-3f928be-2022.1.21" # GMT.jl#819
+
+@test vparse("1.2:3") == v"1.2" == vparse("1.2 3")

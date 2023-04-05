@@ -1,7 +1,6 @@
 # VersionParsing
 
-[![Build Status](https://travis-ci.org/JuliaInterop/VersionParsing.jl.svg?branch=master)](https://travis-ci.org/JuliaInterop/VersionParsing.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/xkaf2sictojyii01?svg=true)](https://ci.appveyor.com/project/StevenGJohnson/versionparsing-jl-r0aae)
+[![Build Status](https://github.com/JuliaInterop/VersionParsing.jl/workflows/CI/badge.svg)](https://github.com/JuliaInterop/VersionParsing.jl/actions)
 [![codecov.io](http://codecov.io/github/JuliaInterop/VersionParsing.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaInterop/VersionParsing.jl?branch=master)
 
 The `VersionParsing` package implements flexible parsing of
